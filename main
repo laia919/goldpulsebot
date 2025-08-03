@@ -1,0 +1,32 @@
+from flask import Flask, jsonify, request
+import os
+
+app = Flask(__name__)
+
+# صفحه اصلی
+@app.route("/")
+def home():
+    return """
+    <h1>✅ وب‌سرویس Flask شما روی Render فعال است!</h1>
+    <p>این وب‌سرویس با Flask ساخته شده و آماده دریافت درخواست‌هاست.</p>
+    <ul>
+        <li><a href="/api/hello">/api/hello</a> - پیام سلام</li>
+        <li><a href="/api/greet?name=Laia">/api/greet?name=Laia</a> - خوش‌آمدگویی با نام</li>
+    </ul>
+    """
+
+# API ساده
+@app.route("/api/hello")
+def hello():
+    return jsonify({"message": "سلام! وب‌سرویس شما کار می‌کند 🎉"})
+
+# API با پارامتر ورودی
+@app.route("/api/greet")
+def greet():
+    name = request.args.get("name", "کاربر")
+    return jsonify({"message": f"سلام {name} عزیز! خوش آمدی 🌸"})
+
+if __name__ == "__main__":
+    # Render پورت رو از متغیر محیطی PORT می‌گیرد
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
